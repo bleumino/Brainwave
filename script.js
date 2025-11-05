@@ -33,6 +33,9 @@ async function extractPDFText(file) {
 }
 
 function generateStudyMaterial(text) {
+  // Save the raw text in localStorage
+  localStorage.setItem('brainwaveText', text);
+
   const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 0);
   const summary = sentences.slice(0, 3).join(". ") + ".";
   const question = sentences[0] ? "What is the main idea of: " + sentences[0].slice(0, 60) + "..." : "What did you learn?";
@@ -47,3 +50,11 @@ function generateStudyMaterial(text) {
     <p>Break your document into smaller chunks to review each section daily.</p>
   `;
 }
+
+// Load saved study material when page opens
+window.addEventListener('load', () => {
+  const savedText = localStorage.getItem('brainwaveText');
+  if (savedText) {
+    generateStudyMaterial(savedText);
+  }
+});
