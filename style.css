@@ -44,3 +44,23 @@ button:hover {
   font-size: 1rem;
   white-space: pre-wrap;
 }
+
+.flashcard {
+  width: 90%;
+  max-width: 400px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background: #66a6ff;
+  color: white;
+  text-align: center;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.flashcard .back {
+  display: none;
+}
+.flashcard.flipped .front { display: none; }
+.flashcard.flipped .back { display: block; }

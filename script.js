@@ -78,6 +78,31 @@ try {
   `;
 }
 
+const flashcard = document.getElementById('flashcard');
+const flipBtn = document.getElementById('flipBtn');
+
+flipBtn.addEventListener('click', () => {
+  flashcard.classList.toggle('flipped');
+});
+
+
+document.querySelectorAll('#quiz .option').forEach(btn => {
+  btn.addEventListener('click', e => {
+    if (e.target.textContent.includes("Idea 2")) {
+      alert("Correct!");
+    } else {
+      alert("Try again!");
+    }
+  });
+});
+
+let currentChunk = 0;
+let chunks = text.split(/\n\n/); // split by paragraphs
+
+function showChunk(index) {
+  output.innerHTML = `<p>${chunks[index]}</p>`;
+}
+
 // Load saved study material when page opens
 window.addEventListener('load', () => {
   const savedText = localStorage.getItem('brainwaveText');
