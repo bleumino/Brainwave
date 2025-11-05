@@ -9,14 +9,20 @@ processBtn.addEventListener('click', async () => {
     return;
   }
 
-  if (file.type === "text/plain") {
-    const text = await file.text();
+  try {
+    let text = "";
+    if (file.type === "application/pdf") {
+      text = await extractPDFText(file);
+    } else {
+      text = await file.text();
+    }
     generateStudyMaterial(text);
-  } else if (file.type === "application/pdf") {
-    const text = await extractPDFText(file);
-    generateStudyMaterial(text);
-  } else {
-    output.textContent = "Unsupported file type. Try .txt or .pdf";
+  } catch (error) {
+    localStorage.setItem('brainwaveText', '');
+    output.innerHTML = `
+      <h2>⚠️ Notice</h2>
+      <p>Unable to read file as text. Raw content is saved.</p>
+    `;
   }
 });
 
