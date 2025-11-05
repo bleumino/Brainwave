@@ -57,6 +57,27 @@ function generateStudyMaterial(text) {
   `;
 }
 
+try {
+  let text = "";
+  if (file.type === "application/pdf") {
+    text = await extractPDFText(file);
+  } else if (file.name.endsWith(".docx")) {
+    // Read docx files using Mammoth
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer });
+    text = result.value;
+  } else {
+    text = await file.text();
+  }
+  generateStudyMaterial(text);
+} catch (error) {
+  localStorage.setItem('brainwaveText', '');
+  output.innerHTML = `
+    <h2>⚠️ Notice</h2>
+    <p>Unable to read file as text. Raw content is saved.</p>
+  `;
+}
+
 // Load saved study material when page opens
 window.addEventListener('load', () => {
   const savedText = localStorage.getItem('brainwaveText');
@@ -64,3 +85,4 @@ window.addEventListener('load', () => {
     generateStudyMaterial(savedText);
   }
 });
+
